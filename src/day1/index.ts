@@ -25,7 +25,7 @@ export const step1 = (data: number[] = inputData) => {
 };
 
 export const step2 = (data: number[] = inputData) => {
-    return data.reduce<number>((count, depth, index, depths) => {
+    return data.reduce((count, depth, index, depths) => {
         if (index - 3 < 0) {
             return count;
         }
