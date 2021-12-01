@@ -6,18 +6,18 @@ const EventSchema = z.object({
     step2: z.function().returns(z.string().or(z.number())),
 });
 
-const getSteps = async ({ DAY: unsafeDay } = process.env) => {
+const getSteps = async (unsafeDay?: string) => {
     if (unsafeDay === undefined) {
         throw new Error("Please specify a day");
     }
     const day = DaySchema.parse(parseInt(unsafeDay));
-    const eventUnsafe = await import(`./day${day}`);
+    const eventUnsafe = await import(`./day${day}/index.ts`);
 
     return EventSchema.parse(eventUnsafe);
 };
 
 const main = async () => {
-    const { step1, step2 } = await getSteps();
+    const { step1, step2 } = await getSteps(Deno.env.get("DAY"));
 
     const start1 = Date.now();
     const result1 = step1();

@@ -1,4 +1,4 @@
-import { getInput } from "../utils";
+import { getInput } from "../utils.ts";
 import { z } from "zod";
 
 const inputData = getInput({
