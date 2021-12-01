@@ -4,7 +4,7 @@
     "author": "",
     "license": "MIT",
     "scripts": {
-        "start:watch": "npx ts-node-dev --transpile-only --respawn ./src/index.ts",
+        "start:watch": "npx ts-node-dev --transpile-only --respawn --rs ./src/index.ts",
         "start": "npx ts-node-dev --transpile-only ./src/index.ts"
     },
     "devDependencies": {

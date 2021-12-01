@@ -11,29 +11,48 @@ const inputData = getInput({
     schema: z.array(z.number().int()),
 });
 
+const getIncreasesCount = (depths: number[]) => {
+    const [, increasesCount] = depths.reduce<[null | number, number]>(
+        ([previousDepth, increases], depth) => {
+            if (previousDepth === null || depth <= previousDepth) {
+                return [depth, increases];
+            }
+            return [depth, increases + 1];
+        },
+        [null, 0]
+    );
+    return increasesCount;
+};
+
 export const step1 = (data: number[] = inputData) => {
-    const frequency = data.reduce((final, current) => {
-        return final + current;
-    }, 0);
-    return frequency;
+    return getIncreasesCount(data);
 };
 
 export const step2 = (data: number[] = inputData) => {
-    let frequency = 0;
-    const frequencies = [0];
-    let repeatedFrequency = null;
-    let i = 0;
-    while (repeatedFrequency === null) {
-        const current = data[i % data.length];
-        frequency += current;
+    const windows = data.reduce<Array<[number?, number?, number?]>>(
+        (windows, depth, index) => {
+            const windowsIndexes = [index, index - 1, index - 2];
+            windowsIndexes.forEach((windowIndex) => {
+                if (windowIndex >= 0) {
+                    windows[windowIndex] === undefined
+                        ? (windows[windowIndex] = [depth])
+                        : windows[windowIndex].push(depth);
+                }
+            });
+            return windows;
+        },
+        []
+    );
 
-        if (frequencies.includes(frequency)) {
-            repeatedFrequency = frequency;
-        } else {
-            frequencies.push(frequency);
-            i++;
-        }
-    }
+    const validWindows = windows.filter(
+        (window) => window.length === 3
+    ) as Array<[number, number, number]>;
 
-    return repeatedFrequency;
+    const windowsDepths = validWindows.reduce<number[]>((depths, window) => {
+        const sum = window.reduce<number>((sum, depth) => sum + depth, 0);
+        depths.push(sum);
+        return depths;
+    }, []);
+
+    return getIncreasesCount(windowsDepths);
 };
