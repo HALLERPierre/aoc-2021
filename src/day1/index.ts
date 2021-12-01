@@ -19,7 +19,7 @@ export const step1 = (data: number[] = inputData) => {
             }
             return [depth, increases + 1];
         },
-        [null, 0]
+        [null, 0],
     );
     return increasesCount;
 };
