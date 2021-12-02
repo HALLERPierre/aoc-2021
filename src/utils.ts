@@ -9,7 +9,5 @@ type GetInput<T> = {
 export function getInput<T>({ day, parse, schema }: GetInput<T>): T {
     const input = Deno.readTextFileSync(`src/day${day}/input`).toString();
     const data = parse(input);
-    schema.parse(data);
-
-    return data;
+    return schema.parse(data);
 }
